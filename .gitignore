@@ -5,6 +5,7 @@
 server/node_modules
 # client/.env
 server/.env
+Notes.txt
 # /.pnp
 # .pnp.js
 
