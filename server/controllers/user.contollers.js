@@ -2,6 +2,7 @@ import User from "../models/user.model.js";
 import AppError from '../utils/error.util.js';
 import cloudinary from "cloudinary";
 import fs from 'fs/promises';
+import sendMail from "../utils/sendMail.js";
 
 const cookieOptions = {
     maxAge: 7*24*60*60*1000,     // 7 Days
@@ -152,9 +153,60 @@ const getProfile = async (req, res) => {
     }
 };
 
+const forgotPassword = async (req, res, next) => {
+    // Getting Email from client side
+    const { email } = req.body;
+    
+    // Cross Check 1 
+    if (!email) {
+        return next(new AppError("E-mail is Required", 400));
+    }
+
+    // Finding User Email in DB
+    const user = await User.findOne({email});
+
+    // Cross Check 2
+    if (!user) {
+        return next(new AppError("E-mail Not Register", 400));
+    }
+
+    // Generating Reset Token
+    const resetToken = await user.generatePasswordResetToken();
+
+    // Saving the Reset Token in DB
+    user.save();
+
+    // Making URL to send with Email for Password Reset
+    const resetPasswordURL = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
+
+    const subject = "Reset Password"
+    const message = `You Can Reset Your Password By Clicking on this Link <a href=${resetPasswordURL} target='_blank'>Reset Your Password</a>`;
+
+    // Sending Mail
+    try {
+        await sendMail(email, subject, message);
+
+        res.status(200).json({
+            success: true,
+            message: `Reset Password Token Send to ${email} Successfully`
+        })
+    } catch (error) {
+        user.forgotPasswordExpiry = undefined;
+        user.forgotPasswordToken = undefined;
+        await user.save();
+        return next(new AppError("E-mail Can't Send, Pls Try Again!", 400));
+    }
+}
+
+const resetPassword = async (req, res) => {
+
+}
+
 export {
     register,
     signin,
     logout,
-    getProfile
+    getProfile,
+    forgotPassword,
+    resetPassword
 };
