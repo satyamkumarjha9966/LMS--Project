@@ -1,6 +1,7 @@
 import Course from "../models/course.model.js";
 import AppError from '../utils/error.util.js';
 import cloudinary from 'cloudinary';
+import fs from 'fs/promises';
 
 const getAllCourses = async (req, res, next) => {
     try {
@@ -65,9 +66,16 @@ const createCourse = async (req, res, next) => {
     }
     
     if (req.file) {
-        const result = cloudinary.v2.uploader.upload({
-            
-        })
+        const result = cloudinary.v2.uploader.upload(req.file.path, {
+            folder: "LMS"
+        });
+
+        if (result) {
+            course.thumbnail.public_id = result.public_id;
+            course.thumbnail.secure_url = result.secure_url;
+        }
+
+        fs.rm(`uploads/${req.file.filename}`)
     }
 }
 
