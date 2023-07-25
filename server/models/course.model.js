@@ -22,11 +22,9 @@ const courseSchema = new Schema(
     thumbnail: {
       public_id: {
         type: String,
-        required: true,
       },
       secure_url: {
         type: String,
-        required: true,
       },
     },
     lectures: [
@@ -44,14 +42,12 @@ const courseSchema = new Schema(
           minLength: [8, "Description must be atleast 8 Characters"],
           maxLength: [200, "Description should be less than 200 Characters"]
         },
-        lecture: {
+        thumbnail: {
           public_id: {
             type: String,
-            required: true,
           },
           secure_url: {
             type: String,
-            required: true,
           },
         },
       },

@@ -86,7 +86,7 @@ const register = async (req, res, next) => {
     });
 };
 
-const signin = async (req, res) => {
+const signin = async (req, res, next) => {
 
     try {
         const { email, password } = req.body;
