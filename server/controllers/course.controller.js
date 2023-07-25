@@ -77,6 +77,14 @@ const createCourse = async (req, res, next) => {
 
         fs.rm(`uploads/${req.file.filename}`)
     }
+
+    await course.save();
+
+    res.status(200).json({
+        success: true,
+        message: "Course Created Successfully",
+        course
+    })
 }
 
 const updateCourse = async (req, res, next) => {
