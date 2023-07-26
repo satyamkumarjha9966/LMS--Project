@@ -66,13 +66,10 @@ const createCourse = async (req, res, next) => {
   }
 
   if (req.file) {
-    console.log('File>>>>>>>>>>', req.file);
-    console.log('File>******************', req.file.path);
-
+    
     try {
-
       const result = await cloudinary.v2.uploader.upload(req.file.path, {
-        folder: "LMS",
+        folder: "lms",
         width: 400,
         height: 400,
         gravity: "faces",
@@ -115,10 +112,35 @@ const updateCourse = async (req, res, next) => {
         runValidators: true,
       }
     );
-
+    
     if (!course) {
       return next(new AppError("Course with given id does not Exist!", 400));
     }
+    
+    if (req.file) {
+      await cloudinary.v2.uploader.destroy(course.thumbnail.public_id);
+
+      try {
+          const result = await cloudinary.v2.uploader.upload(req.file.path, {
+              folder: 'lms',
+              width: 250,
+              height: 250,
+              gravity: 'faces',
+              crop: 'fill'
+          });
+
+          if (result) {
+            course.thumbnail.public_id = result.public_id;
+            course.thumbnail.secure_url = result.secure_url;
+
+              // Remove File From Server
+              fs.rm(`uploads/${req.file.filename}`)
+          }
+      } catch (error) {
+          return next(new AppError(error || "File Not Uploaded, Pls Try Again", 500));
+      }
+  }
+
 
     res.status(200).json({
       success: true,
@@ -174,13 +196,16 @@ const addLectureToCourseById = async (req, res, next) => {
     const lectureData = {
       title,
       description,
-      thumbnail: {},
+      thumbnail: {
+        public_id: "DUMMY",
+        secure_url: "DUMMY",
+      },
     };
 
     if (req.file) {
       try {
         const result = await cloudinary.v2.uploader.upload(req.file.path, {
-          folder: "LMS",
+          folder: "lms",
           width: 400,
           height: 400,
           gravity: "faces",

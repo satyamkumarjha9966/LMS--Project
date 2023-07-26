@@ -43,11 +43,10 @@ const register = async (req, res, next) => {
     };
 
     // Profile Image  = File Upload
-    console.log('File Details > ', JSON.stringify(req.file));
     if (req.file) {
         try {
             const result = await cloudinary.v2.uploader.upload(req.file.path, {
-                folder: 'LMS',
+                folder: 'lms',
                 width: 250,
                 height: 250,
                 gravity: 'faces',
@@ -285,7 +284,7 @@ const updateUser = async (req, res, next) => {
 
         try {
             const result = await cloudinary.v2.uploader.upload(req.file.path, {
-                folder: 'LMS',
+                folder: 'lms',
                 width: 250,
                 height: 250,
                 gravity: 'faces',
