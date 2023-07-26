@@ -1,6 +1,6 @@
 import path from 'path';
 
-import multer from 'multer';
+import multer from 'multer';      // From that server easily read multi-part/data type
 
 const upload = multer({
     dest: "uploads/",

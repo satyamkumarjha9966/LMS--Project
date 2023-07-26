@@ -66,7 +66,11 @@ const createCourse = async (req, res, next) => {
   }
 
   if (req.file) {
+    console.log('File>>>>>>>>>>', req.file);
+    console.log('File>******************', req.file.path);
+
     try {
+
       const result = await cloudinary.v2.uploader.upload(req.file.path, {
         folder: "LMS",
         width: 400,
@@ -79,12 +83,12 @@ const createCourse = async (req, res, next) => {
         course.thumbnail.public_id = result.public_id;
         course.thumbnail.secure_url = result.secure_url;
 
-        // Remove File From Server/Local Device
+      //   // Remove File From Server/Local Device
         fs.rm(`uploads/${req.file.filename}`);
       }
     } catch (error) {
       return next(
-        new AppError(error || "File Not Uploaded, Pls Try Again", 500)
+        new AppError("File Not Uploaded, Pls Try Again", 500)
       );
     }
   }
