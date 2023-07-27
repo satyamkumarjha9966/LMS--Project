@@ -1,6 +1,7 @@
 import app from './app.js';
 import connectionToDB from './config/dbConnection.js';
 import cloddinary from 'cloudinary';
+import Razorpay from 'razorpay';
 
 
 const PORT = process.env.PORT || 5000;
@@ -11,6 +12,12 @@ cloddinary.v2.config({
     api_key: process.env.CLOUDINARY_API_KEY,
     api_secret: process.env.CLOUDINARY_API_SECRET
 });
+
+// Razorpay Configuration
+export const razorpay = new Razorpay({
+    key_id: process.env.RAZORPAY_KEY_ID,
+    key_secret: process.env.RAZORPAY_SECRET,
+})
 
 app.listen(PORT, async () => {
     await connectionToDB();

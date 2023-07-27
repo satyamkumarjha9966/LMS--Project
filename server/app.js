@@ -7,6 +7,7 @@ import morgan from 'morgan';
 import userRoutes from './routes/user.routes.js';  
 import errorMiddleware from './middlewares/error.middleware.js';
 import courseRouter from './routes/course.routes.js';
+import paymentRouter from './routes/payment.routes.js';
 
 const app = express();
 
@@ -25,9 +26,10 @@ app.use('/ping', (req, res) => {
     res.send('Pong')
 });
 
-// Routes of 3 Modules
+// Routes of 3 Modules (user, courses, payment)
 app.use('/api/v1/user', userRoutes);
 app.use('/api/v1/courses', courseRouter);
+app.use('/api/v1/payments', paymentRouter);
 
 app.all('*', (req, res) => {
     res.status(404).send('OOPS!! 404 Page Not Found');
