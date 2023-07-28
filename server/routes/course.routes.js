@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { getAllCourses, getLecturesByCourseId, createCourse, updateCourse, removeCourse, addLectureToCourseById, updateLectureOfCourseById, deleteLectureOfCourseById } from '../controllers/course.controller.js';
-import { authorizedRoles, isLoggedIn } from '../middlewares/auth.middleware.js';
+import { authorizeSubscriber, authorizedRoles, isLoggedIn } from '../middlewares/auth.middleware.js';
 import upload from "../middlewares/multer.middleware.js";
 
 const courseRouter = Router();
@@ -17,6 +17,7 @@ courseRouter.route('/')            // From this we can made multiple types of re
 courseRouter.route('/:id')
     .get(
         isLoggedIn, 
+        authorizeSubscriber,
         getLecturesByCourseId
         )
     .put(

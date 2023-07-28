@@ -29,7 +29,19 @@ const authorizedRoles = (...roles) => async (req, res, next) => {
     next();
 };
 
+const authorizeSubscriber = async (req, res, next) => {
+    const subscription = req.user.subscription;
+    const currentUserRole = req.user.role;
+
+    if (currentUserRole !== 'ADMIN' && subscription.status !== 'active') {
+        return next(new AppError('Pls Subscribe to access this Route!', 403));
+    }
+
+    next();
+}
+
 export {
     isLoggedIn,
-    authorizedRoles
+    authorizedRoles,
+    authorizeSubscriber
 }

@@ -138,6 +138,12 @@ export const allPayments = async (req, res, next) => {
         const subscriptions = await razorpay.subscriptions.all({
             count: count || 10,
         })
+
+        res.status(200).json({
+            succe: true,
+            message: "All Payments Details Here!",
+            subscriptions
+        })
     } catch (error) {
         return next(new AppError('There is Some Error, Pls Try Again!', 400));
     }
