@@ -24,7 +24,7 @@
 
 1. Install Talwind
    ...
-   npm install -D tailwindcss
+   npm install -D tailwindcss postcss autoprefixer
    ...
 
 2. Create Tailwind Config File
@@ -34,7 +34,7 @@
 
 3. Add File Extension to Tailwind Config File
    ...
-   "./src/\*_/_.{html,js,jsx,ts,tsx}"
+   "./index.html", "./src/\*_/_.{html,js,jsx,ts,tsx}"
    ...
 
 4. Add to Talwind Directives at the top of the `index.css` file
