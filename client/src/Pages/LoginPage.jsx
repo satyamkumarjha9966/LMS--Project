@@ -33,7 +33,6 @@ function LoginPage() {
 
     // Dispatch Account Login Action
     const response = await dispatch(login(loginData));
-    console.log(response);
 
     if (response?.payload?.success)
       // On SuccessFully Signup Navigate user to home page

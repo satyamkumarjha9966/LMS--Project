@@ -96,7 +96,6 @@ function SignupPage() {
 
     // Dispatch Create Account Action
     const response = await dispatch(createAccount(formData));
-    console.log(response);
 
     if (response?.payload?.success)
       // On SuccessFully Signup Navigate user to home page

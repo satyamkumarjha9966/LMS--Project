@@ -42,21 +42,46 @@ export const login = createAsyncThunk("/auth/login", async (data) => {
   }
 });
 
+export const logout = createAsyncThunk("/auth/logout", async () => {
+  try {
+    const res = axiosInstance.get("user/logout");
+    toast.promise(res, {
+      loading: "Wait! Logout in Progress....",
+      success: (data) => {
+        return data?.data?.message;
+      },
+      error: "Failed to Logout, Pls Try Again!",
+    });
+
+    return (await res).data;
+  } catch (error) {
+    toast.error(error?.response?.data?.message);
+  }
+});
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {},
 
-  // From that we can define extra work on promise state of outer/extra reducer
+  // From that we can define extra work on promise state of outer/extra reducer  (buildr is object)
   extraReducers: (builder) => {
-    builder.addCase(login.fulfilled, (state, action) => {
-      localStorage.setItem("data", JSON.stringify(action?.payload?.user));
-      localStorage.setItem("isLoggedIn", true);
-      localStorage.setItem("role", action?.payload?.user?.role);
-      state.isLoggedIn = true;
-      state.data = action?.payload?.user;
-      state.role = action?.payload?.user?.role;
-    });
+    builder
+      // action return an object
+      .addCase(login.fulfilled, (state, action) => {
+        localStorage.setItem("data", JSON.stringify(action?.payload?.user));
+        localStorage.setItem("isLoggedIn", true);
+        localStorage.setItem("role", action?.payload?.user?.role);
+        state.isLoggedIn = true;
+        state.data = action?.payload?.user;
+        state.role = action?.payload?.user?.role;
+      })
+      .addCase(logout.fulfilled, (state) => {
+        localStorage.clear();
+        state.data = {};
+        state.isLoggedIn = false;
+        state.role = "";
+      });
   },
 });
 
