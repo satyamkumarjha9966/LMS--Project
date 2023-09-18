@@ -21,6 +21,6 @@ userRoutes.get("/me", isLoggedIn, getProfile);
 userRoutes.post("/reset", forgotPassword);
 userRoutes.post("/reset/:resetToken", resetPassword);
 userRoutes.post("/change-password", isLoggedIn, changePassword);
-userRoutes.put("/update", isLoggedIn, upload.single("avatar"), updateUser);
+userRoutes.put("/update/:id", isLoggedIn, upload.single("avatar"), updateUser);
 
 export default userRoutes;
