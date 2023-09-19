@@ -112,6 +112,7 @@ function HomeLayout({ children }) {
         </div>
 
         {children}
+        <div className="border-l-4"></div>
 
         <Footer />
       </div>
