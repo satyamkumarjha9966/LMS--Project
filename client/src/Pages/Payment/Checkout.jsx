@@ -17,9 +17,6 @@ function Checkout() {
   const subscription_id = useSelector(
     (state) => state?.razorpay?.subscription_id
   );
-  const isPaymentVerified = useSelector(
-    (state) => state?.razorpay?.isPaymentVerified
-  );
   const userData = useSelector((state) => state?.auth?.data);
 
   const paymentDetails = {
@@ -49,6 +46,7 @@ function Checkout() {
         name: userData.fullName,
       },
       handler: async function (response) {
+        // It Internally works by razorpay
         paymentDetails.razorpay_payment_id = response.razorpay_payment_id;
         paymentDetails.razorpay_signature = response.razorpay_signature;
         paymentDetails.razorpay_subscription_id =
@@ -64,6 +62,7 @@ function Checkout() {
       },
     };
 
+    // To Open Payment pop up (also Added Razorpay CDN in index.html page to open the pop up)
     const paymentObject = new window.Razorpay(options);
     paymentObject.open();
   }
@@ -83,7 +82,7 @@ function Checkout() {
         className="min-h-[90vh] flex items-center justify-center"
       >
         <div className="w-80 h-[26rem] flex flex-col justify-center rounded-lg relative shadow-[0_0_10px_black]">
-          <h1 className="font-bold absolute top-0 w-full text-center p-4 text-2xl rounded-lg bg-orange-500">
+          <h1 className="font-bold absolute top-0 w-full text-center p-4 text-2xl bg-orange-500">
             Subscription Bundle
           </h1>
 
