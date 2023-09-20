@@ -283,7 +283,7 @@ const deleteLectureOfCourseById = async (req, res, next) => {
       return next(new AppError("Pls Select Course Id and Lecture Id", 400));
     }
 
-    const course = await Course.findById(courseId);
+    const course = await Course.findById(courseId).populate();
 
     if (!course) {
       return next(new AppError("Course not Found with this Id", 400));

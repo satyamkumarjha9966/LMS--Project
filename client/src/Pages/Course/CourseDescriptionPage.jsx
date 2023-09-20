@@ -32,18 +32,25 @@ function CourseDescriptionPage() {
                 </p>
               </div>
 
-              {role === "ADMIN" || data?.subscription?.status === "ACTIVE" ? (
-                <button className="bg-orange-500 text-xl rounded-md font-bold px-5 py-3 w-full hover:bg-orange-600 transition-all ease-in-out duration-300">
-                  Watch Lectures
-                </button>
-              ) : (
+              {/* Have to Change this */}
+
+              {/* {role === "ADMIN" || data?.subscription?.status === "active" ? ( */}
+              <button
+                onClick={() =>
+                  navigate("/course/displaylecture", { state: { ...state } })
+                }
+                className="bg-orange-500 text-xl rounded-md font-bold px-5 py-3 w-full hover:bg-orange-600 transition-all ease-in-out duration-300"
+              >
+                Watch Lectures
+              </button>
+              {/* ) : (
                 <button
                   onClick={() => navigate("/checkout")}
                   className="bg-orange-500 text-xl rounded-md font-bold px-5 py-3 w-full hover:bg-orange-600 transition-all ease-in-out duration-300"
                 >
                   Subscribe
                 </button>
-              )}
+              )} */}
             </div>
           </div>
 

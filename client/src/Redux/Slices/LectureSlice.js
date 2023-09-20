@@ -72,11 +72,11 @@ const lectureSlice = createSlice({
     builder
       .addCase(getCourseLecture.fulfilled, (state, action) => {
         console.log(action);
-        state.lectures = action?.payload?.lectures; // note
+        state.lectures = action?.payload?.lecture; // note
       })
       .addCase(addCourseLecture.fulfilled, (state, action) => {
         console.log(action);
-        state.lectures = action?.payload?.course?.lectures; // note
+        state.lectures = action?.payload?.course?.lecture; // note
       });
   },
 });
