@@ -26,7 +26,8 @@ courseRouter
     authorizedRoles("ADMIN"),
     upload.single("thumbnail"), // From this we can get data in req.body although we send data in form data and content-type is multipart/form-data
     createCourse
-  );
+  )
+  .delete(isLoggedIn, authorizedRoles("ADMIN"), deleteLectureOfCourseById);
 
 courseRouter
   .route("/:id")
@@ -45,9 +46,9 @@ courseRouter
     addLectureToCourseById
   );
 
-courseRouter
-  .route("/:id1/:id2")
-  .put(isLoggedIn, authorizedRoles("ADMIN"), updateLectureOfCourseById)
-  .delete(isLoggedIn, authorizedRoles("ADMIN"), deleteLectureOfCourseById);
+// courseRouter
+//   .route("/:id1/:id2")
+//   .put(isLoggedIn, authorizedRoles("ADMIN"), updateLectureOfCourseById)
+//   .delete(isLoggedIn, authorizedRoles("ADMIN"), deleteLectureOfCourseById);
 
 export default courseRouter;

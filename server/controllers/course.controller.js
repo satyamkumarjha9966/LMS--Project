@@ -66,7 +66,6 @@ const createCourse = async (req, res, next) => {
   }
 
   if (req.file) {
-    
     try {
       const result = await cloudinary.v2.uploader.upload(req.file.path, {
         folder: "lms",
@@ -80,13 +79,11 @@ const createCourse = async (req, res, next) => {
         course.thumbnail.public_id = result.public_id;
         course.thumbnail.secure_url = result.secure_url;
 
-      //   // Remove File From Server/Local Device
+        //   // Remove File From Server/Local Device
         fs.rm(`uploads/${req.file.filename}`);
       }
     } catch (error) {
-      return next(
-        new AppError("File Not Uploaded, Pls Try Again", 500)
-      );
+      return next(new AppError("File Not Uploaded, Pls Try Again", 500));
     }
   }
 
@@ -112,35 +109,36 @@ const updateCourse = async (req, res, next) => {
         runValidators: true,
       }
     );
-    
+
     if (!course) {
       return next(new AppError("Course with given id does not Exist!", 400));
     }
-    
+
     if (req.file) {
       await cloudinary.v2.uploader.destroy(course.thumbnail.public_id);
 
       try {
-          const result = await cloudinary.v2.uploader.upload(req.file.path, {
-              folder: 'lms',
-              width: 250,
-              height: 250,
-              gravity: 'faces',
-              crop: 'fill'
-          });
+        const result = await cloudinary.v2.uploader.upload(req.file.path, {
+          folder: "lms",
+          width: 250,
+          height: 250,
+          gravity: "faces",
+          crop: "fill",
+        });
 
-          if (result) {
-            course.thumbnail.public_id = result.public_id;
-            course.thumbnail.secure_url = result.secure_url;
+        if (result) {
+          course.thumbnail.public_id = result.public_id;
+          course.thumbnail.secure_url = result.secure_url;
 
-              // Remove File From Server
-              fs.rm(`uploads/${req.file.filename}`)
-          }
+          // Remove File From Server
+          fs.rm(`uploads/${req.file.filename}`);
+        }
       } catch (error) {
-          return next(new AppError(error || "File Not Uploaded, Pls Try Again", 500));
+        return next(
+          new AppError(error || "File Not Uploaded, Pls Try Again", 500)
+        );
       }
-  }
-
+    }
 
     res.status(200).json({
       success: true,
@@ -274,30 +272,30 @@ const updateLectureOfCourseById = async (req, res, next) => {
     message: "Lecture Data Updated Successfully",
     lecture,
   });
-};   // Not Done Yet
+}; // Not Done Yet
 
 const deleteLectureOfCourseById = async (req, res, next) => {
   try {
+    // Grabbing the courseId and lectureId from req.query
+    const { courseId, lectureId } = req.query;
 
-    const { id1, id2 } = req.params;
-
-    if (!id1 || !id2) {
+    if (!courseId || !lectureId) {
       return next(new AppError("Pls Select Course Id and Lecture Id", 400));
     }
 
-    const course = await Course.findById(id1);
+    const course = await Course.findById(courseId);
 
     if (!course) {
       return next(new AppError("Course not Found with this Id", 400));
     }
 
-    const lecture = await Course.findById(id2);
+    const lecture = await Course.findById(lectureId);
 
     if (!lecture) {
       return next(new AppError("Lecture is Not Found", 400));
     }
 
-    await Course.findByIdAndDelete(id2);
+    await Course.findByIdAndDelete(lectureId);
 
     res.status(200).json({
       success: true,
@@ -306,7 +304,7 @@ const deleteLectureOfCourseById = async (req, res, next) => {
   } catch (error) {
     return next(new AppError("There is Some Error, Pls Try Again!", 400));
   }
-};   // Not Done Yet 
+}; // Not Done Yet
 
 export {
   getAllCourses,
