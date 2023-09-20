@@ -118,6 +118,17 @@ function DisplayLectures() {
               Lecture Not Uploaded Yet!
             </h1>
 
+            {role === "ADMIN" && (
+              <button
+                onClick={() =>
+                  navigate("/course/addlecture", { state: { ...state } })
+                }
+                className="btn-primary text-xl rounded-md font-bold px-2 py-2 w-full transition-all ease-in-out duration-300 mt-8 hover:text-white"
+              >
+                Add New Lecture
+              </button>
+            )}
+
             <button
               onClick={() => navigate(-1)}
               className="bg-orange-500 text-xl rounded-md font-bold px-2 py-2 w-full hover:bg-orange-600 transition-all ease-in-out duration-300 mt-8 hover:text-white"
