@@ -76,7 +76,7 @@ function DisplayLectures() {
                       onClick={() =>
                         navigate("/course/addlecture", { state: { ...state } })
                       }
-                      className="btn-primary px-3 py-2 rounded-md font-semibold"
+                      className="btn-primary px-3 py-2 rounded-md font-semibold hover:text-white"
                     >
                       Add New Lecture
                     </button>
