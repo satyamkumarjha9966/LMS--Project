@@ -175,11 +175,11 @@ const addLectureToCourseById = async (req, res, next) => {
   try {
     const { title, description } = req.body;
 
+    const { id } = req.params;
+
     if (!title || !description) {
       return next(new AppError("All Fields Are Required", 400));
     }
-
-    const { id } = req.params;
 
     if (!id) {
       return next(new AppError("Course Does Not Found With This Id", 400));
@@ -204,10 +204,8 @@ const addLectureToCourseById = async (req, res, next) => {
       try {
         const result = await cloudinary.v2.uploader.upload(req.file.path, {
           folder: "lms",
-          width: 400,
-          height: 400,
-          gravity: "faces",
-          crop: "fill",
+          chunk_size: 5000000000,
+          resource_type: "video",
         });
 
         if (result) {

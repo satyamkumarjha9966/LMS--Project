@@ -28,7 +28,7 @@ export const addCourseLecture = createAsyncThunk(
   async (data) => {
     try {
       const formData = new FormData();
-      formData.append("lecture", data.lecture);
+      formData.append("thumbnail", data.thumbnail);
       formData.append("title", data.title);
       formData.append("description", data.description);
 

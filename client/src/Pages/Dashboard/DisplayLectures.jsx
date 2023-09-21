@@ -42,7 +42,7 @@ function DisplayLectures() {
             {/* Left section for playing video and displaying course detail to admin */}
             <div className="space-y-5 w-[30rem] p-2 rounded-lg shadow-[0_0_10px_black]">
               <video
-                src={lectures && lectures[currentVideo]?.lecture?.secure_url}
+                src={lectures && lectures[currentVideo]?.thumbnail?.secure_url}
                 className="object-fill rounded-tl-lg rounded-tr-lg w-full"
                 controls
                 disablePictureInPicture
