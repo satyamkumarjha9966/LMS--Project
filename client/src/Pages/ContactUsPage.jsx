@@ -33,7 +33,7 @@ function ContactUsPage() {
     }
 
     try {
-      const response = axiosInstance.post("/contact", userInput);
+      const response = axiosInstance.post("/miscellaneous/contact", userInput);
       toast.promise(response, {
         loading: "Submitting Your Message....",
         success: "Message Submitted Successfully",

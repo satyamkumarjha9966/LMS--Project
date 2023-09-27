@@ -7,13 +7,13 @@ const courseSchema = new Schema(
       required: [true, "Title is Required"],
       minLength: [8, "Title must be atleast 8 Characters"],
       maxLength: [59, "Title should be less than 60 Characters"],
-      trim: true
+      trim: true,
     },
     description: {
       type: String,
       required: [true, "Description is Required"],
       minLength: [8, "Description must be atleast 8 Characters"],
-      maxLength: [200, "Description should be less than 200 Characters"]
+      maxLength: [200, "Description should be less than 200 Characters"],
     },
     category: {
       type: String,
@@ -40,7 +40,7 @@ const courseSchema = new Schema(
           type: String,
           required: [true, "Description is Required"],
           minLength: [8, "Description must be atleast 8 Characters"],
-          maxLength: [200, "Description should be less than 200 Characters"]
+          maxLength: [200, "Description should be less than 200 Characters"],
         },
         thumbnail: {
           public_id: {

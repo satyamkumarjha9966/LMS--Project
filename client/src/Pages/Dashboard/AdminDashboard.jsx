@@ -34,7 +34,10 @@ function AdminDashboard() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  //   const { allUsersCount, subscribedCount } = useSelector((state) => state.stat);
+  //************************* */
+  const { allUsersCount, subscribedUsersCount } = useSelector(
+    (state) => state.stat
+  );
 
   //   const { allPayments, finalMonths, monthlySalesRecord } = useSelector(
   //     (state) => state.razorpay
@@ -45,8 +48,9 @@ function AdminDashboard() {
     datasets: [
       {
         label: "User Details",
-        // data: [allUsersCount, subscribedCount],
-        data: [90, 10],
+        //************************* */
+        data: [allUsersCount, subscribedUsersCount],
+        // data: [90, 10],
         backgroundColor: ["yellow", "green"],
         borderWidth: 1,
         borderColor: ["yellow", "green"],
@@ -96,7 +100,8 @@ function AdminDashboard() {
   useEffect(() => {
     (async () => {
       await dispatch(getAllCourses());
-      //   await dispatch(getStatsData());
+      //************************************* */
+      await dispatch(getStatsData());
       //   await dispatch(getPaymentRecord());
     })();
   }, []);
@@ -117,8 +122,8 @@ function AdminDashboard() {
               <div className="flex items-center justify-between p-5 gap-5 rounded-md shadow-[0_0_10px_black]">
                 <div className="flex flex-col items-center">
                   <p className="font-semibold">Registered Users</p>
-                  {/* <h1 className="text-4xl font-bold">{allUsersCount}</h1> */}
-                  <h1 className="text-4xl font-bold">10</h1>
+                  <h1 className="text-4xl font-bold">{allUsersCount}</h1>
+                  {/* <h1 className="text-4xl font-bold">10</h1> */}
                 </div>
                 <FaUsers className="text-orange-500 text-5xl" />
               </div>
@@ -126,8 +131,8 @@ function AdminDashboard() {
               <div className="flex items-center justify-between p-5 gap-5 rounded-md shadow-[0_0_10px_black]">
                 <div className="flex flex-col items-center">
                   <p className="font-semibold">Subscribed Users</p>
-                  {/* <h1 className="text-4xl font-bold">{subscribedCount}</h1> */}
-                  <h1 className="text-4xl font-bold">90</h1>
+                  <h1 className="text-4xl font-bold">{subscribedUsersCount}</h1>
+                  {/* <h1 className="text-4xl font-bold">90</h1> */}
                 </div>
                 <FaUsers className="text-green-500 text-5xl" />
               </div>

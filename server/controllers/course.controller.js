@@ -281,23 +281,43 @@ const deleteLectureOfCourseById = async (req, res, next) => {
       return next(new AppError("Pls Select Course Id and Lecture Id", 400));
     }
 
-    const course = await Course.findById(courseId).populate();
+    const course = await Course.findById(courseId);
 
     if (!course) {
       return next(new AppError("Course not Found with this Id", 400));
     }
 
-    const lecture = await Course.findById(lectureId);
+    // Find the index of the lecture using the lectureId
+    const lectureIndex = course.lectures.findIndex(
+      (lecture) => lecture._id.toString() === lectureId.toString()
+    );
 
-    if (!lecture) {
-      return next(new AppError("Lecture is Not Found", 400));
+    // If returned index is -1 then send error as mentioned below
+    if (lectureIndex === -1) {
+      return next(new AppError("Lecture does not exist.", 404));
     }
 
-    await Course.findByIdAndDelete(lectureId);
+    // Delete the lecture from cloudinary
+    await cloudinary.v2.uploader.destroy(
+      course.lectures[lectureIndex].thumbnail.public_id,
+      {
+        resource_type: "video",
+      }
+    );
 
+    // Remove the lecture from the array
+    course.lectures.splice(lectureIndex, 1);
+
+    // update the number of lectures based on lectres array length
+    course.numbersOfLectures = course.lectures.length;
+
+    // Save the course object
+    await course.save();
+
+    // Return response
     res.status(200).json({
       success: true,
-      message: "Lecture Deleted Successfully",
+      message: "Course lecture removed successfully",
     });
   } catch (error) {
     return next(new AppError("There is Some Error, Pls Try Again!", 400));
