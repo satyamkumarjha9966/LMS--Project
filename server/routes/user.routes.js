@@ -19,7 +19,7 @@ userRoutes.post("/signin", signin);
 userRoutes.get("/logout", logout);
 userRoutes.get("/me", isLoggedIn, getProfile);
 userRoutes.post("/reset", forgotPassword);
-userRoutes.post("/reset/:resetToken", resetPassword);
+userRoutes.post("/reset-password/:resetToken", resetPassword);
 userRoutes.post("/change-password", isLoggedIn, changePassword);
 userRoutes.put("/update/:id", isLoggedIn, upload.single("avatar"), updateUser);
 

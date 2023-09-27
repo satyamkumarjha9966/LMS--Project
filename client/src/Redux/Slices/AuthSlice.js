@@ -45,6 +45,43 @@ export const login = createAsyncThunk("/auth/login", async (data) => {
   }
 });
 
+export const reset = createAsyncThunk("/auth/reset", async (data) => {
+  try {
+    const res = axiosInstance.post("user/reset", data);
+    toast.promise(res, {
+      loading: "Wait! Sending Mail....",
+      success: (data) => {
+        return data?.data?.message;
+      },
+      error: "Failed to Send Mail, Pls Try Again!",
+    });
+
+    return (await res).data;
+  } catch (error) {
+    toast.error(error?.response?.data?.message);
+  }
+});
+
+export const resetPasswordToken = createAsyncThunk(
+  "/auth/reset-password",
+  async (data) => {
+    try {
+      const res = axiosInstance.post(`user/reset-password/${data[1]}`, data[0]);
+      toast.promise(res, {
+        loading: "Wait! Checking Reset Token....",
+        success: (data) => {
+          return data?.data?.message;
+        },
+        error: "Failed to Verify Reset Token, Pls Try Again!",
+      });
+
+      return (await res).data;
+    } catch (error) {
+      toast.error(error?.response?.data?.message);
+    }
+  }
+);
+
 export const logout = createAsyncThunk("/auth/logout", async () => {
   try {
     const res = axiosInstance.get("user/logout");

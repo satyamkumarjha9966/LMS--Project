@@ -1,24 +1,21 @@
 import React, { useState } from "react";
 import HomeLayout from "./../Layouts/HomeLayout";
-import { BsPersonCircle } from "react-icons/bs";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
-import { login } from "./../Redux/Slices/AuthSlice";
+import { reset } from "./../Redux/Slices/AuthSlice";
 
-function LoginPage() {
+function ForgotPasswordPage() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
-  const [loginData, setLoginData] = useState({
+  const [resetData, setResetData] = useState({
     email: "",
-    password: "",
   });
 
   // Handle User Input
   function handleUserInput(e) {
     const { name, value } = e.target;
-    setLoginData({ ...loginData, [name]: value });
+    setResetData({ ...resetData, [name]: value });
   }
 
   // Handle Form Submit Button
@@ -26,21 +23,20 @@ function LoginPage() {
     e.preventDefault();
 
     // Validation
-    if (!loginData.email || !loginData.password) {
+    if (!resetData.email) {
       toast.error("Please Fill All Details!");
       return;
     }
 
     // Dispatch Account Login Action
-    const response = await dispatch(login(loginData));
+    const response = await dispatch(reset(resetData));
 
     if (response?.payload?.success)
       // On SuccessFully Signup Navigate user to home page
-      navigate("/");
+      toast.success("Please Check Your Mail For Reset Password");
 
-    setLoginData({
+    setResetData({
       email: "",
-      password: "",
     });
   }
   return (
@@ -51,7 +47,9 @@ function LoginPage() {
           onSubmit={onLogin}
           className="flex flex-col justify-center gap-3 rounded-lg p-4 text-black w-96 shadow-[0_0_10px_black]"
         >
-          <h1 className="text-center text-2xl font-bold">Login Page</h1>
+          <h1 className="text-center text-2xl font-bold">
+            Forgot Password Page
+          </h1>
 
           <div className="flex flex-col gap-1">
             <label htmlFor="email" className="font-semibold">
@@ -64,23 +62,7 @@ function LoginPage() {
               id="email"
               placeholder="Enter Your E-mail"
               className="px-2 py-1 border"
-              value={loginData.email}
-              onChange={handleUserInput}
-            />
-          </div>
-
-          <div className="flex flex-col gap-1">
-            <label htmlFor="password" className="font-semibold">
-              Password
-            </label>
-            <input
-              type="password"
-              required
-              name="password"
-              id="password"
-              placeholder="Enter Your Password"
-              className="px-2 py-1 border"
-              value={loginData.password}
+              value={resetData.email}
               onChange={handleUserInput}
             />
           </div>
@@ -89,7 +71,7 @@ function LoginPage() {
             type="submit"
             className="bg-orange-500 hover:bg-orange-600 hover:text-white transition-all ease-in-out duration-300 rounded-md py-2 font-semibold cursor-pointer text-lg m-2"
           >
-            Login
+            Reset Password
           </button>
 
           <p className="font-semibold text-center">
@@ -99,11 +81,10 @@ function LoginPage() {
             </Link>
           </p>
 
-          {/* Forgot Password  */}
           <p className="font-semibold text-center">
-            Forgot Your Password?{" "}
-            <Link to="/reset" className="link text-accent cursor-pointer">
-              Click Here to Reset
+            Have an Account?{" "}
+            <Link to="/login" className="link text-accent cursor-pointer">
+              Log In
             </Link>
           </p>
         </form>
@@ -112,4 +93,4 @@ function LoginPage() {
   );
 }
 
-export default LoginPage;
+export default ForgotPasswordPage;

@@ -1,24 +1,23 @@
 import React, { useState } from "react";
 import HomeLayout from "./../Layouts/HomeLayout";
-import { BsPersonCircle } from "react-icons/bs";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
-import { login } from "./../Redux/Slices/AuthSlice";
+import { resetPasswordToken } from "./../Redux/Slices/AuthSlice";
 
-function LoginPage() {
+function ResetPasswordPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { resetToken } = useParams();
 
-  const [loginData, setLoginData] = useState({
-    email: "",
+  const [resetPassword, setResetPassword] = useState({
     password: "",
   });
 
   // Handle User Input
   function handleUserInput(e) {
     const { name, value } = e.target;
-    setLoginData({ ...loginData, [name]: value });
+    setResetPassword({ ...resetPassword, [name]: value });
   }
 
   // Handle Form Submit Button
@@ -26,20 +25,21 @@ function LoginPage() {
     e.preventDefault();
 
     // Validation
-    if (!loginData.email || !loginData.password) {
+    if (!resetPassword.password) {
       toast.error("Please Fill All Details!");
       return;
     }
 
     // Dispatch Account Login Action
-    const response = await dispatch(login(loginData));
+    const response = await dispatch(
+      resetPasswordToken([resetPassword, resetToken])
+    );
 
     if (response?.payload?.success)
       // On SuccessFully Signup Navigate user to home page
-      navigate("/");
+      navigate("/login");
 
-    setLoginData({
-      email: "",
+    setResetPassword({
       password: "",
     });
   }
@@ -51,23 +51,9 @@ function LoginPage() {
           onSubmit={onLogin}
           className="flex flex-col justify-center gap-3 rounded-lg p-4 text-black w-96 shadow-[0_0_10px_black]"
         >
-          <h1 className="text-center text-2xl font-bold">Login Page</h1>
-
-          <div className="flex flex-col gap-1">
-            <label htmlFor="email" className="font-semibold">
-              E-mail
-            </label>
-            <input
-              type="email"
-              required
-              name="email"
-              id="email"
-              placeholder="Enter Your E-mail"
-              className="px-2 py-1 border"
-              value={loginData.email}
-              onChange={handleUserInput}
-            />
-          </div>
+          <h1 className="text-center text-2xl font-bold">
+            Password Reset Page
+          </h1>
 
           <div className="flex flex-col gap-1">
             <label htmlFor="password" className="font-semibold">
@@ -78,9 +64,9 @@ function LoginPage() {
               required
               name="password"
               id="password"
-              placeholder="Enter Your Password"
+              placeholder="Enter Your New Password"
               className="px-2 py-1 border"
-              value={loginData.password}
+              value={resetPassword.password}
               onChange={handleUserInput}
             />
           </div>
@@ -89,27 +75,12 @@ function LoginPage() {
             type="submit"
             className="bg-orange-500 hover:bg-orange-600 hover:text-white transition-all ease-in-out duration-300 rounded-md py-2 font-semibold cursor-pointer text-lg m-2"
           >
-            Login
+            Change Password
           </button>
-
-          <p className="font-semibold text-center">
-            Do Not Have an Account?{" "}
-            <Link to="/signup" className="link text-accent cursor-pointer">
-              Sign Up
-            </Link>
-          </p>
-
-          {/* Forgot Password  */}
-          <p className="font-semibold text-center">
-            Forgot Your Password?{" "}
-            <Link to="/reset" className="link text-accent cursor-pointer">
-              Click Here to Reset
-            </Link>
-          </p>
         </form>
       </div>
     </HomeLayout>
   );
 }
 
-export default LoginPage;
+export default ResetPasswordPage;
