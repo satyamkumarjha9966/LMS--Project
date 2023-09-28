@@ -12,6 +12,7 @@ const contactFormSchema = new Schema(
       required: [true, "Email is Required"],
       lowercase: true,
       trim: true,
+
     },
     message: {
       type: String,
@@ -23,6 +24,6 @@ const contactFormSchema = new Schema(
   }
 );
 
-const contactForm = model("ContactForm", contactFormSchema);
+const ContactForm = model("ContactForm", contactFormSchema);
 
-export default contactForm;
+export default ContactForm;

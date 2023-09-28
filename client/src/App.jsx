@@ -21,6 +21,7 @@ import AddLecture from "./Pages/Dashboard/AddLecture";
 import AdminDashboard from "./Pages/Dashboard/AdminDashboard";
 import ForgotPasswordPage from "./Pages/ForgotPasswordPage";
 import ResetPasswordPage from "./Pages/ResetPasswordPage";
+import ChangePasswordPage from "./Pages/ChangePasswordPage";
 
 function App() {
   return (
@@ -52,6 +53,10 @@ function App() {
         </Route>
 
         <Route element={<RequireAuth allowedRoles={["ADMIN", "USER"]} />}>
+          <Route
+            path="/changepassword"
+            element={<ChangePasswordPage />}
+          ></Route>
           <Route path="/user/profile" element={<UserProfilePage />}></Route>
           <Route path="/user/editprofile" element={<EditProfile />}></Route>
           <Route path="/checkout" element={<Checkout />}></Route>

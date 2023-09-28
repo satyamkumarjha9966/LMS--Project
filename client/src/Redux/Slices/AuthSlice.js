@@ -5,10 +5,11 @@ import axiosInstance from "./../../Helpers/axiosInstance";
 const initialState = {
   isLoggedIn: localStorage.getItem("isLoggedIn") || false,
   role: localStorage.getItem("role") || "",
-  data:
-    localStorage.getItem("data") != undefined
-      ? JSON.parse(localStorage.getItem("data"))
-      : {},
+  // data:
+  //   localStorage.getItem("data") != undefined
+  //     ? JSON.parse(localStorage.getItem("data"))
+  //     : {},
+  data: localStorage.getItem("data"),
 };
 
 export const createAccount = createAsyncThunk("/auth/signup", async (data) => {
@@ -44,6 +45,26 @@ export const login = createAsyncThunk("/auth/login", async (data) => {
     toast.error(error?.response?.data?.message);
   }
 });
+
+export const changePassword = createAsyncThunk(
+  "/auth/changepassword",
+  async (data) => {
+    try {
+      const res = axiosInstance.post("user/change-password", data);
+      toast.promise(res, {
+        loading: "Wait! Password Changing in Progress....",
+        success: (data) => {
+          return data?.data?.message;
+        },
+        error: "Failed to Change Password, Pls Try Again!",
+      });
+
+      return (await res).data;
+    } catch (error) {
+      toast.error(error?.response?.data?.message);
+    }
+  }
+);
 
 export const reset = createAsyncThunk("/auth/reset", async (data) => {
   try {

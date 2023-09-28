@@ -109,7 +109,7 @@ const signin = async (req, res, next) => {
 
     // Cross Check 2  || If email or password does not match
     // To compare plain and Encrypted Password
-    if (!user || !user.comparePassword(password)) {
+    if (!(user && (await user.comparePassword(password)))) {
       return next(new AppError("Email or Password does not Match", 400));
     }
 
@@ -213,7 +213,6 @@ const resetPassword = async (req, res, next) => {
   const { password } = req.body;
   console.log("PASSWORD > ", password);
 
-
   if (!password) {
     return next(new AppError("Pls Enter Your New Password", 400));
   }
@@ -262,13 +261,13 @@ const changePassword = async (req, res, next) => {
 
   const isPasswordValid = await user.comparePassword(oldPassword);
 
-  if (!user) {
+  if (!isPasswordValid) {
     return next(new AppError("Invalid Old Password", 400));
   }
 
   user.password = newPassword;
 
-  user.save();
+  await user.save();
 
   user.password = undefined;
 
